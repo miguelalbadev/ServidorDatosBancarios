@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using System;
+using System.Data.Entity;
 
 namespace ServidorDatosBancarios.Models
 {
@@ -20,6 +22,8 @@ namespace ServidorDatosBancarios.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        [ThreadStatic]
+        public static ApplicationDbContext applicationDbContext;
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -29,5 +33,12 @@ namespace ServidorDatosBancarios.Models
         {
             return new ApplicationDbContext();
         }
+
+        
+        public System.Data.Entity.DbSet<ServidorDatosBancarios.Models.Persona> Personas { get; set; }
+
+        public System.Data.Entity.DbSet<ServidorDatosBancarios.Models.Domicilio> Domicilios { get; set; }
+
+        public System.Data.Entity.DbSet<ServidorDatosBancarios.Models.CuentaBancaria> CuentaBancarias { get; set; }
     }
 }
