@@ -28,14 +28,14 @@ namespace ServidorDatosBancarios.Controllers
 
 
         // GET: api/CuentasBancarias
-        public IQueryable<CuentaBancaria> ReadAll()
+        public IQueryable<CuentaBancaria> GetCuentasBancarias()
         {
             return cuentasBancariasService.ReadAll();
         }
 
         // GET: api/CuentasBancarias/5
         [ResponseType(typeof(CuentaBancaria))]
-        public IHttpActionResult Read(long id)
+        public IHttpActionResult GetCuentaBancaria(long id)
         {
             CuentaBancaria cuentaBancaria = cuentasBancariasService.Read(id);
             if (cuentaBancaria == null)
@@ -48,7 +48,7 @@ namespace ServidorDatosBancarios.Controllers
 
         // PUT: api/CuentasBancarias/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult Update(long id, CuentaBancaria cuentaBancaria)
+        public IHttpActionResult PutCuentaBancaria(long id, CuentaBancaria cuentaBancaria)
         {
             if (!ModelState.IsValid)
             {
@@ -74,7 +74,7 @@ namespace ServidorDatosBancarios.Controllers
 
         // POST: api/CuentasBancarias
         [ResponseType(typeof(CuentaBancaria))]
-        public IHttpActionResult Create(CuentaBancaria cuentaBancaria)
+        public IHttpActionResult PostCuentaBancaria(CuentaBancaria cuentaBancaria)
         {
             if (!ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace ServidorDatosBancarios.Controllers
 
         // DELETE: api/CuentasBancarias/5
         [ResponseType(typeof(CuentaBancaria))]
-        public IHttpActionResult Delete(long id)
+        public IHttpActionResult DeleteCuentaBancaria(long id)
         {
             CuentaBancaria cuentaBancaria;
             try {
