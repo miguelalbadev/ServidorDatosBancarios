@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ServidorDatosBancarios.Repository {
-    public interface IPersonasRepositorio {
+    public interface IPersonasRepository {
 
     }
 }
