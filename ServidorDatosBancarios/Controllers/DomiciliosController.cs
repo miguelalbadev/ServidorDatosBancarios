@@ -9,30 +9,51 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ServidorDatosBancarios.Models;
+using System.Web.Http.Cors;
+using ServidorDatosBancarios.Service;
+using ServidorDatosBancarios.Excepciones;
 
 namespace ServidorDatosBancarios.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DomiciliosController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
-        // GET: api/Domicilios
-        public IQueryable<Domicilio> GetDomicilios()
+        public IDomiciliosService domiciliosService;
+        public DomiciliosController(IDomiciliosService domiciliosService)
         {
-            return db.Domicilios;
+            this.domiciliosService = domiciliosService;
+        }
+
+        // POST: api/Domicilios
+        [ResponseType(typeof(Domicilio))]
+        public IHttpActionResult PostDomicilio(Domicilio domicilio)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            domicilio = domiciliosService.Create(domicilio);
+            return CreatedAtRoute("DefaultApi", new { id = domicilio.Id }, domicilio);
         }
 
         // GET: api/Domicilios/5
         [ResponseType(typeof(Domicilio))]
         public IHttpActionResult GetDomicilio(long id)
         {
-            Domicilio domicilio = db.Domicilios.Find(id);
+            Domicilio domicilio = domiciliosService.Read(id);
             if (domicilio == null)
             {
                 return NotFound();
             }
 
             return Ok(domicilio);
+        }
+
+        // GET: api/Domicilios
+        public IQueryable<Domicilio> GetDomicilios()
+        {
+            return domiciliosService.ReadAll();
         }
 
         // PUT: api/Domicilios/5
@@ -49,70 +70,31 @@ namespace ServidorDatosBancarios.Controllers
                 return BadRequest();
             }
 
-            db.Entry(domicilio).State = EntityState.Modified;
-
             try
             {
-                db.SaveChanges();
+                domiciliosService.Update(id, domicilio);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DomicilioExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Domicilios
-        [ResponseType(typeof(Domicilio))]
-        public IHttpActionResult PostDomicilio(Domicilio domicilio)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Domicilios.Add(domicilio);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = domicilio.Id }, domicilio);
         }
 
         // DELETE: api/Domicilios/5
         [ResponseType(typeof(Domicilio))]
         public IHttpActionResult DeleteDomicilio(long id)
         {
-            Domicilio domicilio = db.Domicilios.Find(id);
-            if (domicilio == null)
+            Domicilio domicilio;
+
+            try
             {
+                domicilio = domiciliosService.Delete(id);
+            } catch(NoEncontradoException) {
                 return NotFound();
             }
-
-            db.Domicilios.Remove(domicilio);
-            db.SaveChanges();
-
             return Ok(domicilio);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool DomicilioExists(long id)
-        {
-            return db.Domicilios.Count(e => e.Id == id) > 0;
         }
     }
 }

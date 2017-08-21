@@ -9,30 +9,51 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using ServidorDatosBancarios.Models;
+using ServidorDatosBancarios.Service;
+using ServidorDatosBancarios.Excepciones;
+using System.Web.Http.Cors;
 
 namespace ServidorDatosBancarios.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PersonasController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
-        // GET: api/Personas
-        public IQueryable<Persona> GetPersonas()
+        public IPersonasService personasService;
+        public PersonasController(IPersonasService personasService)
         {
-            return db.Personas;
+            this.personasService = personasService;
+        }
+
+        // POST: api/Personas
+        [ResponseType(typeof(Persona))]
+        public IHttpActionResult PostPersona(Persona persona)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            persona = personasService.Create(persona);
+            return CreatedAtRoute("DefaultApi", new { id = persona.Id }, persona);
         }
 
         // GET: api/Personas/5
         [ResponseType(typeof(Persona))]
         public IHttpActionResult GetPersona(long id)
         {
-            Persona persona = db.Personas.Find(id);
+            Persona persona = personasService.Read(id);
             if (persona == null)
             {
                 return NotFound();
             }
 
             return Ok(persona);
+        }
+
+        // GET: api/Personas
+        public IQueryable<Persona> GetPersonas()
+        {
+            return personasService.ReadAll();
         }
 
         // PUT: api/Personas/5
@@ -49,70 +70,33 @@ namespace ServidorDatosBancarios.Controllers
                 return BadRequest();
             }
 
-            db.Entry(persona).State = EntityState.Modified;
-
             try
             {
-                db.SaveChanges();
+                personasService.Update(id, persona);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PersonaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Personas
-        [ResponseType(typeof(Persona))]
-        public IHttpActionResult PostPersona(Persona persona)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Personas.Add(persona);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = persona.Id }, persona);
         }
 
         // DELETE: api/Personas/5
         [ResponseType(typeof(Persona))]
         public IHttpActionResult DeletePersona(long id)
         {
-            Persona persona = db.Personas.Find(id);
-            if (persona == null)
+            Persona persona;
+
+            try
+            {
+                persona = personasService.Delete(id);
+            }
+            catch (NoEncontradoException)
             {
                 return NotFound();
             }
-
-            db.Personas.Remove(persona);
-            db.SaveChanges();
-
             return Ok(persona);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool PersonaExists(long id)
-        {
-            return db.Personas.Count(e => e.Id == id) > 0;
         }
     }
 }
