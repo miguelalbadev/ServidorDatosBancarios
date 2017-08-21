@@ -18,7 +18,7 @@ namespace ServidorDatosBancarios.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CuentasBancariasController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        
 
         private ICuentasBancariasService cuentasBancariasService;
 

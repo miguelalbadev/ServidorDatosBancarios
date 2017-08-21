@@ -7,7 +7,7 @@ using System.Web;
 
 namespace ServidorDatosBancarios.Repository
 {
-    public class PersonasRepository
+    public class PersonasRepository:IPersonasRepository
     {
         public Persona Create(Persona persona)
         {

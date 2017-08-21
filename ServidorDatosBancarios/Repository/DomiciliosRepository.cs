@@ -7,7 +7,7 @@ using System.Web;
 
 namespace ServidorDatosBancarios.Repository
 {
-    public class DomiciliosRepository
+    public class DomiciliosRepository:IDomiciliosRepository
     {
         public Domicilio Create(Domicilio domicilio)
         {

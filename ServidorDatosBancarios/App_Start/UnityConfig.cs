@@ -26,6 +26,16 @@ namespace ServidorDatosBancarios
                 new InterceptionBehavior<DbInterceptor>());
             container.RegisterType<ICuentasBancariasRepository, CuentasBancariasRepository>();
 
+            container.RegisterType<IDomiciliosService, DomiciliosService>(
+                new Interceptor<InterfaceInterceptor>(),
+                new InterceptionBehavior<DbInterceptor>());
+            container.RegisterType<IDomiciliosRepository, DomiciliosRepository>();
+
+            container.RegisterType<IPersonasService, PersonasService>(
+                new Interceptor<InterfaceInterceptor>(),
+                new InterceptionBehavior<DbInterceptor>());
+            container.RegisterType<IPersonasRepository, PersonasRepository>();
+
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
         }
 
