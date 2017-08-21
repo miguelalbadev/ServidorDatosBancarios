@@ -297,8 +297,6 @@
     <Compile Include="Service\IDomiciliosService.cs" />
     <Compile Include="Repository\CuentasBancariasRepository.cs" />
     <Compile Include="Repository\ICuentasBancariasRepository.cs" />
-    <Compile Include="Repository\IPersonasRepository.cs" />
-    <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Service\CuentasBancariasService.cs" />
     <Compile Include="Service\ICuentasBancariasService.cs" />
     <Compile Include="Service\IPersonasService.cs" />
