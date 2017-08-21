@@ -39,6 +39,6 @@ namespace ServidorDatosBancarios.Models
 
         public System.Data.Entity.DbSet<ServidorDatosBancarios.Models.Domicilio> Domicilios { get; set; }
 
-        public System.Data.Entity.DbSet<ServidorDatosBancarios.Models.CuentaBancaria> CuentaBancarias { get; set; }
+        public System.Data.Entity.DbSet<ServidorDatosBancarios.Models.CuentaBancaria> CuentasBancarias { get; set; }
     }
 }
