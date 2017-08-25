@@ -63,7 +63,7 @@ namespace ServidorDatosBancarios.Controllers
             
             try
             {
-                cuentasBancariasService.Update(cuentaBancaria);
+                cuentasBancariasService.Update(id, cuentaBancaria);
             }
             catch (Exception e)
             {

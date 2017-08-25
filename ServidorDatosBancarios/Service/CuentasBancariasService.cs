@@ -29,8 +29,8 @@ namespace ServidorDatosBancarios.Service {
             return cuentasBancariasRepository.ReadAll();
         }
 
-        public void Update(CuentaBancaria cuentaBancaria) {
-            cuentasBancariasRepository.Update(cuentaBancaria);
+        public void Update(long id, CuentaBancaria cuentaBancaria) {
+            cuentasBancariasRepository.Update(id, cuentaBancaria);
         }
     }
 }

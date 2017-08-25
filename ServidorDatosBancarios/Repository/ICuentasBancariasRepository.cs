@@ -11,7 +11,7 @@ namespace ServidorDatosBancarios.Repository {
         CuentaBancaria Read(long id);
         IQueryable<CuentaBancaria> ReadAll();
         CuentaBancaria Create(CuentaBancaria cuentaBancaria);
-        void Update(CuentaBancaria cuentaBancaria);
+        void Update(long id, CuentaBancaria cuentaBancaria);
         CuentaBancaria Delete(long id);
     }
 }
