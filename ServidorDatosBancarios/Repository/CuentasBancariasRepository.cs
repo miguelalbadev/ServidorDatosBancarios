@@ -31,7 +31,7 @@ namespace ServidorDatosBancarios.Repository {
             return lista.AsQueryable();
         }
 
-        public void Update(CuentaBancaria cuentaBancaria) {
+        public void Update(long id, CuentaBancaria cuentaBancaria) {
             if (ApplicationDbContext.applicationDbContext.CuentasBancarias.Count(e => e.Id == cuentaBancaria.Id) == 0) {
                 throw new NoEncontradoException("No he encontrado la entidad ");
             }

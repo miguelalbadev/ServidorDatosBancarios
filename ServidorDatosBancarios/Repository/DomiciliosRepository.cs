@@ -2,6 +2,7 @@
 using ServidorDatosBancarios.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -31,6 +32,7 @@ namespace ServidorDatosBancarios.Repository
             {
                 throw new NoEncontradoException("No se ha encontrado la entidad.");
             }
+            ApplicationDbContext.applicationDbContext.Entry(domicilio).State = EntityState.Modified;
         }
 
         public Domicilio Delete(long id)
